@@ -62,6 +62,7 @@ class RoborockS7ValetudoRobot extends RoborockGen4ValetudoRobot {
                 quirkFactory.getQuirk(RoborockQuirkFactory.KNOWN_QUIRKS.STATUS_LED),
                 quirkFactory.getQuirk(RoborockQuirkFactory.KNOWN_QUIRKS.CARPET_HANDLING),
                 quirkFactory.getQuirk(RoborockQuirkFactory.KNOWN_QUIRKS.MOP_PATTERN),
+                quirkFactory.getQuirk(RoborockQuirkFactory.KNOWN_QUIRKS.MANUAL_MAP_SEGMENT_TRIGGER),
             ]
         }));
     }
