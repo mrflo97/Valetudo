@@ -3,8 +3,6 @@ const RobotFirmwareError = require("../../../core/RobotFirmwareError");
 
 const ConsumableStateAttribute = require("../../../entities/state/attributes/ConsumableStateAttribute");
 
-const Logger = require("../../../Logger");
-
 /**
  * @extends ConsumableMonitoringCapability<import("../DreameValetudoRobot")>
  */
@@ -174,9 +172,6 @@ class Dreame1CConsumableMonitoringCapability extends ConsumableMonitoringCapabil
                 }
                 break;
             }
-
-            default:
-                Logger.warn("Unhandled consumable update", msg);
         }
 
         if (consumable) {
@@ -192,17 +187,20 @@ class Dreame1CConsumableMonitoringCapability extends ConsumableMonitoringCapabil
                 {
                     type: ConsumableStateAttribute.TYPE.BRUSH,
                     subType: ConsumableStateAttribute.SUB_TYPE.MAIN,
-                    unit: ConsumableStateAttribute.UNITS.MINUTES
+                    unit: ConsumableStateAttribute.UNITS.MINUTES,
+                    maxValue: 300 * 60
                 },
                 {
                     type: ConsumableStateAttribute.TYPE.BRUSH,
                     subType: ConsumableStateAttribute.SUB_TYPE.SIDE_RIGHT,
-                    unit: ConsumableStateAttribute.UNITS.MINUTES
+                    unit: ConsumableStateAttribute.UNITS.MINUTES,
+                    maxValue: 200 * 60
                 },
                 {
                     type: ConsumableStateAttribute.TYPE.FILTER,
                     subType: ConsumableStateAttribute.SUB_TYPE.MAIN,
-                    unit: ConsumableStateAttribute.UNITS.MINUTES
+                    unit: ConsumableStateAttribute.UNITS.MINUTES,
+                    maxValue: 150 * 60
                 }
             ]
         };

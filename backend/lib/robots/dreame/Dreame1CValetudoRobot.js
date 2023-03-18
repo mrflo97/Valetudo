@@ -525,27 +525,6 @@ class Dreame1CValetudoRobot extends DreameValetudoRobot {
                             }));
                             break;
                         }
-
-                        case MIOT_SERVICES.VACUUM_2.PROPERTIES.PERSISTENT_MAPS.PIID:
-                        case MIOT_SERVICES.VACUUM_2.PROPERTIES.TOTAL_STATISTICS_TIME.PIID:
-                        case MIOT_SERVICES.VACUUM_2.PROPERTIES.TOTAL_STATISTICS_AREA.PIID:
-                        case MIOT_SERVICES.VACUUM_2.PROPERTIES.TOTAL_STATISTICS_COUNT.PIID:
-                        case MIOT_SERVICES.VACUUM_2.PROPERTIES.CURRENT_STATISTICS_AREA.PIID:
-                        case MIOT_SERVICES.VACUUM_2.PROPERTIES.CURRENT_STATISTICS_TIME.PIID:
-                            //ignored for now
-                            break;
-
-                        //TODO: Figure out what these mean
-                        case 11:
-                        case 12:
-                        case 19:
-                        case 22:
-                        case 27: //disable map uploads
-                            //ignored for now
-                            break;
-
-                        default:
-                            Logger.warn("Unhandled VACUUM_2 property", elem);
                     }
                     break;
                 }
@@ -575,10 +554,6 @@ class Dreame1CValetudoRobot extends DreameValetudoRobot {
                 case MIOT_SERVICES.FILTER.SIID:
                     this.consumableMonitoringCapability.parseConsumablesMessage(elem);
                     break;
-
-
-                default:
-                    Logger.warn("Unhandled property update", elem);
             }
         });
 
@@ -591,8 +566,8 @@ class Dreame1CValetudoRobot extends DreameValetudoRobot {
             let statusMetaData = {};
 
             if (this.errorCode === "0" || this.errorCode === "" || this.errorCode === 0 || this.errorCode === undefined) {
-                statusValue = DreameValetudoRobot.STATUS_MAP[this.mode].value;
-                statusFlag = DreameValetudoRobot.STATUS_MAP[this.mode].flag;
+                statusValue = DreameValetudoRobot.STATUS_MAP[this.mode]?.value ?? stateAttrs.StatusStateAttribute.VALUE.IDLE;
+                statusFlag = DreameValetudoRobot.STATUS_MAP[this.mode]?.flag;
 
                 if (this.isCharging === true) {
                     statusValue = stateAttrs.StatusStateAttribute.VALUE.DOCKED;
