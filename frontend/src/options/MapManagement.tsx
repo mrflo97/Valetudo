@@ -161,6 +161,7 @@ const ValetudoMapDataExportButtonItem = (): React.ReactElement => {
 };
 
 const MapManagement = (): React.ReactElement => {
+    const [s7MapToolsSupported] = useCapabilitiesSupported(Capability.S7MapTools);
     const [
         persistentMapControlCapabilitySupported,
         mappingPassCapabilitySupported,
@@ -194,6 +195,12 @@ const MapManagement = (): React.ReactElement => {
 
     const robotManagedListItems = React.useMemo(() => {
         const items = [];
+
+        if (s7MapToolsSupported) {
+            items.push(<LinkListMenuItem key="s7Maps" url="/options/map_management/s7_maps"
+                primaryLabel="S7 saved maps and dock" secondaryLabel="Save and restore maps or move the dock"
+                icon={<MappingPassIcon/>}/>);
+        }
 
         if (
             persistentMapControlCapabilitySupported ||
@@ -265,6 +272,7 @@ const MapManagement = (): React.ReactElement => {
 
         return items;
     }, [
+        s7MapToolsSupported,
         persistentMapControlCapabilitySupported,
         mappingPassCapabilitySupported,
         mapResetCapabilitySupported,

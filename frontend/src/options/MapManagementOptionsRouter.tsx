@@ -7,8 +7,10 @@ import {Capability, useDuststreamingConfigurationQuery} from "../api";
 import React from "react";
 import RobotCoverageMapPage from "../map/RobotCoverageMapPage";
 import SpectatorMapPage from "../map/SpectatorMapPage";
+import S7MapTools from "./S7MapTools";
 
 const OptionsRouter = (): React.ReactElement => {
+    const [s7MapToolsSupported] = useCapabilitiesSupported(Capability.S7MapTools);
     const [
         combinedVirtualRestrictionsCapabilitySupported,
 
@@ -37,6 +39,7 @@ const OptionsRouter = (): React.ReactElement => {
     return (
         <Routes>
             <Route path={""} element={<MapManagement />}/>
+            {s7MapToolsSupported && <Route path="s7_maps" element={<S7MapTools/>}/>}
 
             {
                 (mapSegmentEditCapabilitySupported || mapSegmentRenameCapabilitySupported) &&

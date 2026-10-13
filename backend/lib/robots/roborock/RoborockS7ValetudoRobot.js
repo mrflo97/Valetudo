@@ -59,6 +59,10 @@ class RoborockS7ValetudoRobot extends RoborockGen4ValetudoRobot {
             this.registerCapability(new capability({robot: this}));
         });
 
+        if (this.config.get("embedded") === true) {
+            this.registerCapability(new capabilities.RoborockS7MapToolsCapability({robot: this}));
+        }
+
         const quirkFactory = new RoborockQuirkFactory({
             robot: this
         });
@@ -69,6 +73,14 @@ class RoborockS7ValetudoRobot extends RoborockGen4ValetudoRobot {
                 quirkFactory.getQuirk(RoborockQuirkFactory.KNOWN_QUIRKS.STATUS_LED),
             ]
         }));
+    }
+
+    sendCommand(method, args = [], options = {}) {
+        const mapTools = this.capabilities[capabilities.RoborockS7MapToolsCapability.TYPE];
+        if (mapTools?.blocksCommands() && !method.startsWith("get_") && !["app_stop", "app_pause"].includes(method)) {
+            throw new Error("Map maintenance is in progress. Finish reboot/recovery before sending commands.");
+        }
+        return super.sendCommand(method, args, options);
     }
 
     getModelName() {

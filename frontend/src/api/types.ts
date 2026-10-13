@@ -1,6 +1,7 @@
 import {AttachmentStateAttributeType, DockComponentStateAttributeType} from "./RawRobotState";
 
 export enum Capability {
+    S7MapTools = "S7MapToolsCapability",
     AutoEmptyDockAutoEmptyIntervalControl = "AutoEmptyDockAutoEmptyIntervalControlCapability",
     AutoEmptyDockAutoEmptyDurationControl = "AutoEmptyDockAutoEmptyDurationControlCapability",
     AutoEmptyDockManualTrigger = "AutoEmptyDockManualTriggerCapability",

@@ -9,6 +9,7 @@ module.exports = {
     CleanRouteControlCapability: require("./CleanRouteControlCapability"),
     CollisionAvoidantNavigationControlCapability: require("./CollisionAvoidantNavigationControlCapability"),
     CombinedVirtualRestrictionsCapability: require("./CombinedVirtualRestrictionsCapability"),
+    S7MapToolsCapability: require("./S7MapToolsCapability"),
     ConsumableMonitoringCapability: require("./ConsumableMonitoringCapability"),
     CurrentStatisticsCapability: require("./CurrentStatisticsCapability"),
     DoNotDisturbCapability: require("./DoNotDisturbCapability"),

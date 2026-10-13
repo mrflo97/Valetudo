@@ -13,6 +13,7 @@
     "docs"
   ],
   "scripts": {
+    "build:s7": "node util/build_s7.js",
     "build": "npm run build --workspace=frontend && npm run build --workspace=backend",
     "lint_all": "npm run lint --workspace=frontend && npm run lint --workspace=backend",
     "ts-check_all": "npm run ts-check --workspace=frontend && npm run ts-check --workspace=backend",

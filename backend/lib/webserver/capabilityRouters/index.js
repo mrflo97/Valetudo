@@ -9,6 +9,7 @@ module.exports = {
     ConsumableMonitoringCapabilityRouter: require("./ConsumableMonitoringCapabilityRouter"),
     DoNotDisturbCapabilityRouter: require("./DoNotDisturbCapabilityRouter"),
     DuststreamingCapabilityRouter: require("./DuststreamingCapabilityRouter"),
+    S7MapToolsCapabilityRouter: require("./S7MapToolsCapabilityRouter"),
     GoToLocationCapabilityRouter: require("./GoToLocationCapabilityRouter"),
     HighResolutionManualControlCapabilityRouter: require("./HighResolutionManualControlCapabilityRouter"),
     LocateCapabilityRouter: require("./LocateCapabilityRouter"),

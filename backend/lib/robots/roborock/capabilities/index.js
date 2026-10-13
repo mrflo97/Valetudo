@@ -9,6 +9,7 @@ module.exports = {
     RoborockCollisionAvoidantNavigationControlCapability: require("./RoborockCollisionAvoidantNavigationControlCapability"),
     RoborockCombinedVirtualRestrictionsCapability: require("./RoborockCombinedVirtualRestrictionsCapability"),
     RoborockConsumableMonitoringCapability: require("./RoborockConsumableMonitoringCapability"),
+    RoborockS7MapToolsCapability: require("./RoborockS7MapToolsCapability"),
     RoborockCurrentStatisticsCapability: require("./RoborockCurrentStatisticsCapability"),
     RoborockDoNotDisturbCapability: require("./RoborockDoNotDisturbCapability"),
     RoborockFanSpeedControlCapability: require("./RoborockFanSpeedControlCapability"),
