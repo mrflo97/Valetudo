@@ -28,35 +28,44 @@ class ZoneCleaningCapabilityMqttHandle extends CapabilityMqttHandle {
                 const req = JSON.parse(value);
 
                 if (Array.isArray(req?.zones)) {
-                    await this.capability.start({
-                        zones: req.zones.map(z => {
-                            if (!(z.points)) {
-                                throw new Error("Invalid Zone");
-                            }
+                    const commandQueue = this.getCommandQueue();
 
-                            return new ValetudoZone({
-                                points: {
-                                    pA: {
-                                        x: z.points.pA?.x,
-                                        y: z.points.pA?.y,
-                                    },
-                                    pB: {
-                                        x: z.points.pB?.x,
-                                        y: z.points.pB?.y,
-                                    },
-                                    pC: {
-                                        x: z.points.pC?.x,
-                                        y: z.points.pC?.y,
-                                    },
-                                    pD: {
-                                        x: z.points.pD?.x,
-                                        y: z.points.pD?.y,
-                                    },
+                    if (commandQueue) {
+                        commandQueue.enqueueZoneClean({
+                            zones: req.zones,
+                            iterations: req.iterations ?? 1
+                        });
+                    } else {
+                        await this.capability.start({
+                            zones: req.zones.map(z => {
+                                if (!(z.points)) {
+                                    throw new Error("Invalid Zone");
                                 }
-                            });
-                        }),
-                        iterations: req.iterations ?? 1
-                    });
+
+                                return new ValetudoZone({
+                                    points: {
+                                        pA: {
+                                            x: z.points.pA?.x,
+                                            y: z.points.pA?.y,
+                                        },
+                                        pB: {
+                                            x: z.points.pB?.x,
+                                            y: z.points.pB?.y,
+                                        },
+                                        pC: {
+                                            x: z.points.pC?.x,
+                                            y: z.points.pC?.y,
+                                        },
+                                        pD: {
+                                            x: z.points.pD?.x,
+                                            y: z.points.pD?.y,
+                                        },
+                                    }
+                                });
+                            }),
+                            iterations: req.iterations ?? 1
+                        });
+                    }
                 } else {
                     throw new Error("Invalid zone cleaning payload");
                 }

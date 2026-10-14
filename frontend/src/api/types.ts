@@ -12,6 +12,7 @@ export enum Capability {
     CleanRouteControl = "CleanRouteControlCapability",
     CollisionAvoidantNavigation = "CollisionAvoidantNavigationControlCapability",
     CombinedVirtualRestrictions = "CombinedVirtualRestrictionsCapability",
+    CommandQueue = "CommandQueueCapability",
     ConsumableMonitoring = "ConsumableMonitoringCapability",
     CurrentStatistics = "CurrentStatisticsCapability",
     DoNotDisturb = "DoNotDisturbCapability",
@@ -403,6 +404,35 @@ export interface ValetudoEventInteractionContext {
     id: string;
     interaction: ValetudoEventInteraction;
 }
+
+export type CommandQueueActionType = "go_to" | "segment_clean" | "zone_clean" | "full_clean" | "home";
+export type CommandQueueActionState = "pending" | "running" | "done" | "failed" | "cancelled";
+
+export interface CommandQueueAction {
+    id: string;
+    type: CommandQueueActionType;
+    params: Record<string, any>;
+    state: CommandQueueActionState;
+    createdAt: string;
+    startedAt?: string;
+    lastError?: string;
+}
+
+export interface CommandQueueState {
+    runningId?: string;
+    actions: CommandQueueAction[];
+}
+
+export type CommandQueueActionRequest =
+    | { action: "enqueue"; type: "go_to"; coordinates: Point }
+    | { action: "enqueue"; type: "segment_clean"; segment_ids: string[]; iterations?: number; customOrder?: boolean }
+    | { action: "enqueue"; type: "zone_clean"; zones: Zone[]; iterations?: number }
+    | { action: "enqueue"; type: "full_clean" }
+    | { action: "enqueue"; type: "home" }
+    | { action: "remove"; id: string }
+    | { action: "clear" }
+    | { action: "reorder"; ids: string[] };
+
 
 export enum LogLevel {
     trace = "trace",

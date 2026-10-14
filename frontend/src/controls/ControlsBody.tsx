@@ -5,6 +5,7 @@ import {
 import {Capability, useRobotInformationQuery} from "../api";
 import {useCapabilitiesSupported} from "../CapabilitiesProvider";
 import BasicControls from "./BasicControls";
+import CommandQueue from "./CommandQueue";
 import PresetSelectionControl from "./PresetSelection";
 import RobotStatus from "./RobotStatus";
 import Dock from "./Dock";
@@ -24,6 +25,7 @@ const ControlsBody = (): React.ReactElement => {
         mopDockCleanTriggerSupported,
         mopDockDryTriggerSupported,
         currentStatistics,
+        commandQueue,
     ] = useCapabilitiesSupported(
         Capability.BasicControl,
         Capability.FanSpeedControl,
@@ -32,7 +34,8 @@ const ControlsBody = (): React.ReactElement => {
         Capability.AutoEmptyDockManualTrigger,
         Capability.MopDockCleanManualTrigger,
         Capability.MopDockDryManualTrigger,
-        Capability.CurrentStatistics
+        Capability.CurrentStatistics,
+        Capability.CommandQueue
     );
 
     const {
@@ -45,6 +48,8 @@ const ControlsBody = (): React.ReactElement => {
             {basicControls && <BasicControls />}
 
             <RobotStatus />
+
+            {commandQueue && <CommandQueue />}
 
             {operationMode && (
                 <PresetSelectionControl

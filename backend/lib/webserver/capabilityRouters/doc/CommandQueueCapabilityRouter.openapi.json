@@ -1,0 +1,229 @@
+{
+  "/api/v2/robot/capabilities/CommandQueueCapability": {
+    "get": {
+      "tags": [
+        "CommandQueueCapability"
+      ],
+      "summary": "Get the current command queue",
+      "responses": {
+        "200": {
+          "description": "The current command queue"
+        }
+      }
+    },
+    "put": {
+      "tags": [
+        "CommandQueueCapability"
+      ],
+      "summary": "Enqueue, remove, reorder or clear queued commands",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "enum": [
+                        "enqueue"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "go_to"
+                      ]
+                    },
+                    "coordinates": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "action",
+                    "type",
+                    "coordinates"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "enum": [
+                        "enqueue"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "segment_clean"
+                      ]
+                    },
+                    "segment_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1
+                    },
+                    "iterations": {
+                      "type": "number"
+                    },
+                    "customOrder": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "action",
+                    "type",
+                    "segment_ids"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "enum": [
+                        "enqueue"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "zone_clean"
+                      ]
+                    },
+                    "zones": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "minItems": 1
+                    },
+                    "iterations": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "action",
+                    "type",
+                    "zones"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "enum": [
+                        "enqueue"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "full_clean",
+                        "home"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "action",
+                    "type"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "enum": [
+                        "remove"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "action",
+                    "id"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "enum": [
+                        "clear"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "action"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "enum": [
+                        "reorder"
+                      ]
+                    },
+                    "ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "action",
+                    "ids"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Ok"
+        },
+        "201": {
+          "description": "Command enqueued"
+        },
+        "400": {
+          "description": "Bad request"
+        }
+      }
+    }
+  }
+}

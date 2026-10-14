@@ -32,12 +32,21 @@ class GoToLocationCapabilityMqttHandle extends CapabilityMqttHandle {
                     typeof reqGoToLocation.coordinates.x === "number" &&
                     typeof reqGoToLocation.coordinates.y === "number"
                 ) {
-                    await this.capability.goTo(new ValetudoGoToLocation({
-                        coordinates: {
+                    const commandQueue = this.getCommandQueue();
+
+                    if (commandQueue) {
+                        commandQueue.enqueueGoTo({
                             x: reqGoToLocation.coordinates.x,
                             y: reqGoToLocation.coordinates.y
-                        }
-                    }));
+                        });
+                    } else {
+                        await this.capability.goTo(new ValetudoGoToLocation({
+                            coordinates: {
+                                x: reqGoToLocation.coordinates.x,
+                                y: reqGoToLocation.coordinates.y
+                            }
+                        }));
+                    }
                 } else {
                     throw new Error("Invalid go to location payload");
                 }

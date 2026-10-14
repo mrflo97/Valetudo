@@ -86,7 +86,8 @@ const BasicControls = (): React.ReactElement => {
     const buttons: CommandButton[] = [
         {
             command: "start",
-            enabled: StartStates.includes(state),
+            // Also enabled while the robot is busy, as the command is then queued
+            enabled: StartStates.includes(state) || PauseStates.includes(state),
             label: flag === "resumable" ? "Resume" : "Start",
             Icon: StartIcon,
         },
@@ -104,7 +105,8 @@ const BasicControls = (): React.ReactElement => {
         },
         {
             command: "home",
-            enabled: state === "idle" || state === "error" || state === "paused",
+            // Also enabled while the robot is busy, as the command is then queued
+            enabled: StartStates.includes(state) || PauseStates.includes(state),
             Icon: HomeIcon,
             label: "Dock",
         },

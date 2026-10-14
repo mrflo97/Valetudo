@@ -10,10 +10,12 @@ class CapabilityRouter {
      * @param {object} options
      * @param {import("../../core/capabilities/Capability") | any} options.capability
      * @param {*} options.validator
+     * @param {import("../../core/ValetudoRobot")} [options.robot]
      */
     constructor(options) {
         this.router = express.Router({mergeParams: true});
         this.capability = options.capability;
+        this.robot = options.robot;
 
         this.validator = options.validator;
 
@@ -23,6 +25,32 @@ class CapabilityRouter {
 
         this.preInit();
         this.initRoutes();
+    }
+
+    /**
+     * @protected
+     * @returns {import("../../core/capabilities/CommandQueueCapability")|undefined}
+     */
+    getCommandQueue() {
+        return this.robot?.capabilities?.["CommandQueueCapability"];
+    }
+
+    /**
+     * @protected
+     * @returns {import("../../entities/state/attributes/StatusStateAttribute")|undefined}
+     */
+    getStatusStateAttribute() {
+        return this.robot?.state?.getFirstMatchingAttribute({
+            attributeClass: "StatusStateAttribute"
+        });
+    }
+
+    /**
+     * @protected
+     * @returns {boolean}
+     */
+    isPaused() {
+        return this.getStatusStateAttribute()?.value === "paused";
     }
 
     /**

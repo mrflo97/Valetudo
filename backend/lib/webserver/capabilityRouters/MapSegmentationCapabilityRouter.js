@@ -25,11 +25,21 @@ class MapSegmentationCapabilityRouter extends CapabilityRouter {
                             options.customOrder = true;
                         }
 
-                        await this.capability.executeSegmentAction(req.body.segment_ids.map(sid => {
-                            return new ValetudoMapSegment({
-                                id: sid
+                        const commandQueue = this.getCommandQueue();
+
+                        if (commandQueue) {
+                            commandQueue.enqueueSegmentClean({
+                                segmentIds: req.body.segment_ids,
+                                iterations: options.iterations,
+                                customOrder: options.customOrder
                             });
-                        }), options);
+                        } else {
+                            await this.capability.executeSegmentAction(req.body.segment_ids.map(sid => {
+                                return new ValetudoMapSegment({
+                                    id: sid
+                                });
+                            }), options);
+                        }
 
                         res.sendStatus(200);
                     } catch (e) {

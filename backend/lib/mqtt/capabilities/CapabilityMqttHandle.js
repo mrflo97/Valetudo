@@ -22,6 +22,26 @@ class CapabilityMqttHandle extends RobotStateNodeMqttHandle {
 
         this.capability = options.capability;
     }
+
+    /**
+     * @protected
+     * @returns {import("../../core/capabilities/CommandQueueCapability")|undefined}
+     */
+    getCommandQueue() {
+        return this.robot?.capabilities?.["CommandQueueCapability"];
+    }
+
+    /**
+     * @protected
+     * @returns {boolean}
+     */
+    isPaused() {
+        const statusStateAttribute = this.robot?.state?.getFirstMatchingAttribute({
+            attributeClass: "StatusStateAttribute"
+        });
+
+        return statusStateAttribute?.value === "paused";
+    }
 }
 
 CapabilityMqttHandle.OPTIONAL = false;

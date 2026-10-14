@@ -4,15 +4,32 @@ class BasicControlCapabilityRouter extends CapabilityRouter {
     initRoutes() {
         const methodMap = {
             "start": () => {
+                const commandQueue = this.getCommandQueue();
+
+                // "start" also resumes a paused clean. That has to happen immediately,
+                // so it is never queued.
+                if (commandQueue && !this.isPaused()) {
+                    return commandQueue.enqueueFullClean();
+                }
+
                 return this.capability.start();
             },
-            "stop": () => {
+            "stop": async () => {
+                // Stopping the robot invalidates the queue.
+                this.getCommandQueue()?.cancelAll();
+
                 return this.capability.stop();
             },
             "pause": () => {
                 return this.capability.pause();
             },
             "home": () => {
+                const commandQueue = this.getCommandQueue();
+
+                if (commandQueue && !this.isPaused()) {
+                    return commandQueue.enqueueHome();
+                }
+
                 return this.capability.home();
             }
         };

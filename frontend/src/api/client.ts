@@ -17,6 +17,8 @@ import {
     CleanRoutePayload,
     CombinedVirtualRestrictionsProperties,
     CombinedVirtualRestrictionsUpdateRequestParameters,
+    CommandQueueActionRequest,
+    CommandQueueState,
     ConsumableId,
     ConsumableProperties,
     ConsumableState,
@@ -278,6 +280,30 @@ export const sendGoToCommand = async (point: Point): Promise<void> => {
             coordinates: floorObject(point),
         }
     );
+};
+
+export const fetchCommandQueue = async (): Promise<CommandQueueState> => {
+    return valetudoAPI
+        .get<CommandQueueState>(`/robot/capabilities/${Capability.CommandQueue}`)
+        .then(({data}) => {
+            return data;
+        });
+};
+
+export const subscribeToCommandQueue = (
+    listener: (data: CommandQueueState) => void
+): (() => void) => {
+    return subscribeToSSE<CommandQueueState>(
+        `/robot/capabilities/${Capability.CommandQueue}/sse`,
+        "CommandQueueUpdated",
+        (data) => {
+            return listener(data);
+        }
+    );
+};
+
+export const sendCommandQueueAction = async (action: CommandQueueActionRequest): Promise<void> => {
+    await valetudoAPI.put(`/robot/capabilities/${Capability.CommandQueue}`, action);
 };
 
 export const fetchZoneProperties = async (): Promise<ZoneProperties> => {

@@ -1,4 +1,5 @@
 module.exports = {
+    CommandQueueValetudoEvent: require("./CommandQueueValetudoEvent"),
     ConsumableDepletedValetudoEvent: require("./ConsumableDepletedValetudoEvent"),
     DismissibleValetudoEvent: require("./DismissibleValetudoEvent"),
     DustBinFullValetudoEvent: require("./DustBinFullValetudoEvent"),

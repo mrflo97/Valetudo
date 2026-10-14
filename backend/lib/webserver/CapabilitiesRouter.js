@@ -36,7 +36,7 @@ class CapabilitiesRouter {
             if (matchedRouter) {
                 this.router.use(
                     "/" + robotCapability.getType(),
-                    new matchedRouter({capability: robotCapability, validator: this.validator}).getRouter()
+                    new matchedRouter({capability: robotCapability, validator: this.validator, robot: this.robot}).getRouter()
                 );
 
             } else {
@@ -52,6 +52,7 @@ class CapabilitiesRouter {
 
 const CAPABILITY_TYPE_TO_ROUTER_MAPPING = {
     [capabilities.S7MapToolsCapability.TYPE]: capabilityRouters.S7MapToolsCapabilityRouter,
+    [capabilities.CommandQueueCapability.TYPE]: capabilityRouters.CommandQueueCapabilityRouter,
     [capabilities.BasicControlCapability.TYPE]: capabilityRouters.BasicControlCapabilityRouter,
     [capabilities.DuststreamingCapability.TYPE]: capabilityRouters.DuststreamingCapabilityRouter,
     [capabilities.FanSpeedControlCapability.TYPE]: capabilityRouters.PresetSelectionCapabilityRouter,

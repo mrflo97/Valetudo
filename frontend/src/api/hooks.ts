@@ -15,6 +15,7 @@ import {
     fetchCapabilities,
     fetchCarpetModeState,
     fetchCombinedVirtualRestrictionsProperties,
+    fetchCommandQueue,
     fetchConsumableStateInformation,
     fetchCurrentStatistics,
     fetchCurrentStatisticsProperties,
@@ -56,6 +57,7 @@ import {
     sendCleanSegmentsCommand,
     sendCleanZonesCommand,
     sendCombinedVirtualRestrictionsUpdate,
+    sendCommandQueueAction,
     sendConsumableReset,
     sendDoNotDisturbConfiguration,
     sendGoToCommand,
@@ -82,6 +84,7 @@ import {
     sendVoicePackManagementCommand,
     sendWifiConfiguration,
     subscribeToLogMessages,
+    subscribeToCommandQueue,
     subscribeToMap,
     subscribeToStateAttributes,
     updatePresetSelection,
@@ -169,6 +172,8 @@ import {
     CarpetSensorMode,
     CleanRoute,
     CombinedVirtualRestrictionsUpdateRequestParameters,
+    CommandQueueActionRequest,
+    CommandQueueState,
     ConsumableId,
     DoNotDisturbConfiguration,
     HighResolutionManualControlInteraction,
@@ -244,6 +249,7 @@ enum QueryKey {
     ManualControlProperties = "manual_control_properties",
     HighResolutionManualControl = "high_resolution_manual_control",
     CombinedVirtualRestrictionsProperties = "combined_virtual_restrictions_properties",
+    CommandQueue = "command_queue",
     UpdaterConfiguration = "updater_configuration",
     UpdaterState = "updater_state",
     CurrentStatistics = "current_statistics",
@@ -1895,6 +1901,33 @@ export const useMapAnnotationsMutation = (
                 updatedAt: Date.now(),
             });
             await queryClient.invalidateQueries({ queryKey: [QueryKey.Map] });
+            await options?.onSuccess?.(data, ...args);
+        },
+    });
+};
+
+export const useCommandQueueQuery = () => {
+    useSSECacheUpdater<CommandQueueState>(QueryKey.CommandQueue, subscribeToCommandQueue);
+
+    return useQuery({
+        queryKey: [QueryKey.CommandQueue],
+        queryFn: fetchCommandQueue,
+    });
+};
+
+export const useCommandQueueMutation = (
+    options?: UseMutationOptions<void, unknown, CommandQueueActionRequest>
+) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (action: CommandQueueActionRequest) => {
+            return sendCommandQueueAction(action);
+        },
+        onError: useOnCommandError(Capability.CommandQueue),
+        ...options,
+        onSuccess: async (data, ...args) => {
+            await queryClient.invalidateQueries({queryKey: [QueryKey.CommandQueue]});
             await options?.onSuccess?.(data, ...args);
         },
     });

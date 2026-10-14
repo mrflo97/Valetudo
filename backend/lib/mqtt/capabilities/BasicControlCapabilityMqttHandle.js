@@ -27,18 +27,30 @@ class BasicControlCapabilityMqttHandle extends CapabilityMqttHandle {
             datatype: DataType.ENUM,
             format: Object.values(Commands.BASIC_CONTROL).join(","),
             setter: async (value) => {
+                const commandQueue = this.getCommandQueue();
+
                 switch (value) {
                     case Commands.BASIC_CONTROL.START:
-                        await this.capability.start();
+                        // "start" also resumes a paused clean, which has to happen immediately
+                        if (commandQueue && !this.isPaused()) {
+                            commandQueue.enqueueFullClean();
+                        } else {
+                            await this.capability.start();
+                        }
                         break;
                     case Commands.BASIC_CONTROL.STOP:
+                        commandQueue?.cancelAll();
                         await this.capability.stop();
                         break;
                     case Commands.BASIC_CONTROL.PAUSE:
                         await this.capability.pause();
                         break;
                     case Commands.BASIC_CONTROL.HOME:
-                        await this.capability.home();
+                        if (commandQueue && !this.isPaused()) {
+                            commandQueue.enqueueHome();
+                        } else {
+                            await this.capability.home();
+                        }
                         break;
                 }
             }

@@ -52,7 +52,19 @@ class MapSegmentationCapabilityMqttHandle extends CapabilityMqttHandle {
                         segments.push(segment);
                     }
 
-                    await this.capability.executeSegmentAction(segments, requestOptions);
+                    const commandQueue = this.getCommandQueue();
+
+                    if (commandQueue) {
+                        commandQueue.enqueueSegmentClean({
+                            segmentIds: segments.map(segment => {
+                                return segment.id;
+                            }),
+                            iterations: requestOptions.iterations,
+                            customOrder: requestOptions.customOrder
+                        });
+                    } else {
+                        await this.capability.executeSegmentAction(segments, requestOptions);
+                    }
                 } else {
                     throw new Error("Missing or empty segment_ids Array in payload");
                 }

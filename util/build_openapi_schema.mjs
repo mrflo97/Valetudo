@@ -31,6 +31,7 @@ const options = {
             {name: "Updater", description: "Update Valetudo using Valetudo"},
 
             {name: "BasicControlCapability", description: "Basic control capability"},
+            {name: "CommandQueueCapability", description: "Command queue capability"},
             {name: "FanSpeedControlCapability", description: "Fan speed control capability"},
             {name: "WaterUsageControlCapability", description: "Water usage control capability"},
             {name: "WifiConfigurationCapability", description: "Wi-Fi configuration capability"},

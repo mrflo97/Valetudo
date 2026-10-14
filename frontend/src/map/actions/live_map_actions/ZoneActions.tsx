@@ -81,7 +81,7 @@ const ZoneActions = (
     }, [zones, convertPixelCoordinatesToCMSpace]);
 
     const handleClick = React.useCallback(() => {
-        if (!didSelectZones || !canClean) {
+        if (!didSelectZones) {
             return;
         }
 
@@ -89,7 +89,7 @@ const ZoneActions = (
             zones: zonesForAPI,
             iterations: iterationCount
         });
-    }, [canClean, didSelectZones, zonesForAPI, iterationCount, cleanTemporaryZones]);
+    }, [didSelectZones, zonesForAPI, iterationCount, cleanTemporaryZones]);
 
     const handleLongClick = React.useCallback(() => {
         setIntegrationHelpDialogPayload(JSON.stringify({
@@ -159,7 +159,7 @@ const ZoneActions = (
             <Grid2 container spacing={1} direction="row-reverse" flexWrap="wrap-reverse">
                 <Grid2>
                     <ActionButton
-                        disabled={!didSelectZones || cleanTemporaryZonesIsExecuting || !canClean}
+                        disabled={!didSelectZones || cleanTemporaryZonesIsExecuting}
                         color="inherit"
                         size="medium"
                         variant="extended"
@@ -224,7 +224,7 @@ const ZoneActions = (
                     (didSelectZones && !canClean) &&
                     <Grid2>
                         <Typography variant="caption" color="textSecondary">
-                            Cannot start zone cleaning while the robot is busy
+                            Will be queued while the robot is busy
                         </Typography>
                     </Grid2>
                 }

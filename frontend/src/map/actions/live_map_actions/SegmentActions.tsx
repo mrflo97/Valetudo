@@ -45,7 +45,7 @@ const SegmentActions = (
     const didSelectSegments = segments.length > 0;
 
     const handleClick = React.useCallback(() => {
-        if (!didSelectSegments || !canClean) {
+        if (!didSelectSegments) {
             return;
         }
 
@@ -54,7 +54,7 @@ const SegmentActions = (
             iterations: iterationCount,
             customOrder: mapSegmentationProperties?.customOrderSupport
         });
-    }, [canClean, didSelectSegments, executeSegmentAction, segments, iterationCount, mapSegmentationProperties]);
+    }, [didSelectSegments, executeSegmentAction, segments, iterationCount, mapSegmentationProperties]);
 
     const handleLongClick = React.useCallback(() => {
         setIntegrationHelpDialogPayload(JSON.stringify({
@@ -127,7 +127,7 @@ const SegmentActions = (
             <Grid2 container spacing={1} direction="row-reverse" flexWrap="wrap-reverse">
                 <Grid2>
                     <ActionButton
-                        disabled={!didSelectSegments || segmentActionExecuting || !canClean}
+                        disabled={!didSelectSegments || segmentActionExecuting}
                         color="inherit"
                         size="medium"
                         variant="extended"
@@ -179,7 +179,7 @@ const SegmentActions = (
                     (didSelectSegments && !canClean) &&
                     <Grid2>
                         <Typography variant="caption" color="textSecondary">
-                            Cannot start segment cleaning while the robot is busy
+                            Will be queued while the robot is busy
                         </Typography>
                     </Grid2>
                 }

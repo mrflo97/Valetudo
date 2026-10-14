@@ -43,12 +43,12 @@ const GoToActions = (
     const canGo = status === "idle" || status === "docked" || status === "paused" || status === "returning" || status === "error";
 
     const handleClick = React.useCallback(() => {
-        if (!canGo || !goToTarget) {
+        if (!goToTarget) {
             return;
         }
 
         goTo(convertPixelCoordinatesToCMSpace({x: goToTarget.x0, y: goToTarget.y0}));
-    }, [canGo, goToTarget, goTo, convertPixelCoordinatesToCMSpace]);
+    }, [goToTarget, goTo, convertPixelCoordinatesToCMSpace]);
 
     const handleLongClick = React.useCallback(() => {
         if (!goToTarget) {
@@ -81,7 +81,7 @@ const GoToActions = (
             <Grid2 container spacing={1} direction="row-reverse" flexWrap="wrap-reverse">
                 <Grid2>
                     <ActionButton
-                        disabled={goToIsExecuting || !canGo || !goToTarget}
+                        disabled={goToIsExecuting || !goToTarget}
                         color="inherit"
                         size="medium"
                         variant="extended"
@@ -116,7 +116,7 @@ const GoToActions = (
                     !canGo &&
                     <Grid2>
                         <Typography variant="caption" color="textSecondary">
-                            Cannot go to point while the robot is busy
+                            Will be queued while the robot is busy
                         </Typography>
                     </Grid2>
                 }

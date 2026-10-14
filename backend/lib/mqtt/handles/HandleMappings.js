@@ -5,6 +5,7 @@ const stateHandles = require("../status");
 
 const CAPABILITY_TYPE_TO_HANDLE_MAPPING = {
     [capabilities.BasicControlCapability.TYPE]: capabilityHandles.BasicControlCapabilityMqttHandle,
+    [capabilities.CommandQueueCapability.TYPE]: capabilityHandles.CommandQueueCapabilityMqttHandle,
     [capabilities.ConsumableMonitoringCapability.TYPE]: capabilityHandles.ConsumableMonitoringCapabilityMqttHandle,
     [capabilities.FanSpeedControlCapability.TYPE]: capabilityHandles.PresetSelectionCapabilityMqttHandle,
     [capabilities.GoToLocationCapability.TYPE]: capabilityHandles.GoToLocationCapabilityMqttHandle,

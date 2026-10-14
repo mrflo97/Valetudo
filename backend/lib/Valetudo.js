@@ -1,3 +1,4 @@
+const CommandQueueCapability = require("./core/capabilities/CommandQueueCapability");
 const Configuration = require("./Configuration");
 const env = require("./res/env");
 const fs = require("fs");
@@ -50,6 +51,10 @@ class Valetudo {
 
         this.valetudoEventStore.setEventHandlerFactory(new ValetudoEventHandlerFactory({robot: this.robot}));
         this.valetudoHelper = new ValetudoHelper({config: this.config, robot: this.robot});
+
+        this.robot.registerCapability(new CommandQueueCapability({
+            robot: this.robot
+        }));
 
         this.phoenixManager = new PhoenixManager({
             valetudoEventStore: this.valetudoEventStore,

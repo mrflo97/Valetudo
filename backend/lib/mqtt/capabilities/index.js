@@ -4,6 +4,7 @@ module.exports = {
     CapabilityMqttHandle: require("./CapabilityMqttHandle"),
     CarpetModeControlCapabilityMqttHandle: require("./CarpetModeControlCapabilityMqttHandle"),
     CarpetSensorModeControlCapabilityMqttHandle: require("./CarpetSensorModeControlCapabilityMqttHandle"),
+    CommandQueueCapabilityMqttHandle: require("./CommandQueueCapabilityMqttHandle"),
     ConsumableMonitoringCapabilityMqttHandle: require("./ConsumableMonitoringCapabilityMqttHandle"),
     CurrentStatisticsCapabilityMqttHandle: require("./CurrentStatisticsCapabilityMqttHandle"),
     GoToLocationCapabilityMqttHandle: require("./GoToLocationCapabilityMqttHandle"),

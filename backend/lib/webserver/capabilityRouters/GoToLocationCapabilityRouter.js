@@ -6,12 +6,22 @@ class GoToLocationCapabilityRouter extends CapabilityRouter {
         this.router.put("/", this.validator, async (req, res) => {
             if (req.body.action === "goto" && req.body.coordinates !== undefined) {
                 try {
-                    await this.capability.goTo(new ValetudoGoToLocation({
-                        coordinates: {
+                    const commandQueue = this.getCommandQueue();
+
+                    if (commandQueue) {
+                        commandQueue.enqueueGoTo({
                             x: req.body.coordinates.x,
                             y: req.body.coordinates.y
-                        }
-                    }));
+                        });
+                    } else {
+                        await this.capability.goTo(new ValetudoGoToLocation({
+                            coordinates: {
+                                x: req.body.coordinates.x,
+                                y: req.body.coordinates.y
+                            }
+                        }));
+                    }
+
                     res.sendStatus(200);
                 } catch (e) {
                     this.sendErrorResponse(req, res, e);
