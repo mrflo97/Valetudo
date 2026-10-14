@@ -16,7 +16,7 @@ run(path.join(root, "frontend/scripts/build.js"), [], path.join(root, "frontend"
 const revision = execFileSync("git", ["rev-parse", "HEAD"], {cwd: root, encoding: "utf8"}).trim();
 const timestamp = new Date().toISOString();
 // Distinct headers let an already-open Web UI detect a newly installed private build.
-const metadata = {version: require("../package.json").version + "-s7.2",
+const metadata = {version: require("../package.json").version + "-s7.4",
     commit: revision + "-s7-" + timestamp.replace(/[^0-9]/g, ""), buildTimestamp: timestamp};
 fs.writeFileSync(path.join(root, "backend/lib/res/build_metadata.json"), JSON.stringify(metadata));
 run(path.join(root, "node_modules/@yao-pkg/pkg/lib-es5/bin.js"), [
