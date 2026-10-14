@@ -24,29 +24,61 @@ class MockBasicControlCapability extends BasicControlCapability {
         setInterval(() => {
             if (this.StatusStateAttr.value === stateAttrs.StatusStateAttribute.VALUE.DOCKED && this.BatteryStateAttr.level < 100) {
                 this.BatteryStateAttr.level++;
+                this.robot.emitStateAttributesUpdated();
             } else if (this.StatusStateAttr.value !== stateAttrs.StatusStateAttribute.VALUE.DOCKED && this.BatteryStateAttr.level > 0) {
                 this.BatteryStateAttr.level--;
+                this.robot.emitStateAttributesUpdated();
             }
         }, 5 * 1000);
     }
 
+    /**
+     * @private
+     * @param {string} value
+     */
+    setStatus(value) {
+        if (this.statusTimer) {
+            clearTimeout(this.statusTimer);
+            this.statusTimer = undefined;
+        }
+
+        this.StatusStateAttr.value = value;
+        this.robot.emitStateAttributesUpdated();
+    }
+
+    /**
+     * Simulates a clean that finishes on its own after a while so that a queued command can follow it
+     *
+     * @private
+     * @param {string} value
+     * @param {number} delay
+     */
+    scheduleReturnToDock(value, delay) {
+        this.statusTimer = setTimeout(() => {
+            this.statusTimer = undefined;
+
+            if (this.StatusStateAttr.value === value) {
+                this.setStatus(stateAttrs.StatusStateAttribute.VALUE.DOCKED);
+            }
+        }, delay);
+    }
+
     async start() {
-        this.StatusStateAttr.value = stateAttrs.StatusStateAttribute.VALUE.CLEANING;
+        this.setStatus(stateAttrs.StatusStateAttribute.VALUE.CLEANING);
+        this.scheduleReturnToDock(stateAttrs.StatusStateAttribute.VALUE.CLEANING, 15 * 1000);
     }
 
     async stop() {
-        this.StatusStateAttr.value = stateAttrs.StatusStateAttribute.VALUE.IDLE;
+        this.setStatus(stateAttrs.StatusStateAttribute.VALUE.IDLE);
     }
 
     async pause() {
-        this.StatusStateAttr.value = stateAttrs.StatusStateAttribute.VALUE.PAUSED;
+        this.setStatus(stateAttrs.StatusStateAttribute.VALUE.PAUSED);
     }
 
     async home() {
-        this.StatusStateAttr.value = stateAttrs.StatusStateAttribute.VALUE.RETURNING;
-        setTimeout(() => {
-            this.StatusStateAttr.value = stateAttrs.StatusStateAttribute.VALUE.DOCKED;
-        }, 10 * 1000);
+        this.setStatus(stateAttrs.StatusStateAttribute.VALUE.RETURNING);
+        this.scheduleReturnToDock(stateAttrs.StatusStateAttribute.VALUE.RETURNING, 10 * 1000);
     }
 }
 

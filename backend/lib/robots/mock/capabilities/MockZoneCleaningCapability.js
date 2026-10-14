@@ -5,7 +5,7 @@ const ZoneCleaningCapability = require("../../../core/capabilities/ZoneCleaningC
  */
 class MockZoneCleaningCapability extends ZoneCleaningCapability {
     async start(options) {
-        // TODO: implement
+        await this.robot.capabilities.BasicControlCapability.start();
     }
 
     getProperties() {

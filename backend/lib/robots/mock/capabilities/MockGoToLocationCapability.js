@@ -1,4 +1,5 @@
 const GoToLocationCapability = require("../../../core/capabilities/GoToLocationCapability");
+const stateAttrs = require("../../../entities/state/attributes");
 const {PointMapEntity, PathMapEntity} = require("../../../entities/map");
 
 /**
@@ -35,12 +36,31 @@ class MockGoToLocationCapability extends GoToLocationCapability {
             map.addEntity(path);
         }
 
+        this.setStatus(stateAttrs.StatusStateAttribute.VALUE.MOVING);
+
         setTimeout(() => {
             map.entities.splice(map.entities.indexOf(predictedPath), 1);
             path.points.push(valetudoGoToLocation.coordinates.x, valetudoGoToLocation.coordinates.y);
             robotEntity.points = [valetudoGoToLocation.coordinates.x, valetudoGoToLocation.coordinates.y];
             this.robot.emitMapUpdated();
+
+            this.setStatus(stateAttrs.StatusStateAttribute.VALUE.IDLE);
         }, 2000);
+    }
+
+    /**
+     * @private
+     * @param {string} value
+     */
+    setStatus(value) {
+        const statusStateAttr = this.robot.state.getFirstMatchingAttribute({
+            attributeClass: stateAttrs.StatusStateAttribute.name
+        });
+
+        if (statusStateAttr) {
+            statusStateAttr.value = value;
+            this.robot.emitStateAttributesUpdated();
+        }
     }
 }
 
