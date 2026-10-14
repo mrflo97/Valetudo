@@ -167,7 +167,9 @@ describe("S7 whole-directory backups", () => {
         await fs.promises.symlink("last_map", path.join(live, "link"));
         await assert.rejects(() => store.save("a", "No", {}), /symlink/);
         await fs.promises.unlink(path.join(live, "link"));
-        store.options.assertIdle = async () => {throw new Error("cleaning");};
+        store.options.assertIdle = async () => {
+            throw new Error("cleaning");
+        };
         await assert.rejects(() => store.save("a", "No", {}), /cleaning/);
         store.options.assertIdle = async () => {};
         const originalStatfs = fs.promises.statfs;
@@ -232,7 +234,9 @@ describe("S7 whole-directory backups", () => {
         await assert.rejects(() => store.moveDock(dock.token, dock.mapId, 30, 0), /changed before installation/);
         assert.equal(store.dock().pose.x, dock.pose.x);
         assert.equal(store.isBlocked(), false);
-        store.checkSpace = async () => {throw new Error("not enough space");};
+        store.checkSpace = async () => {
+            throw new Error("not enough space");
+        };
         await assert.rejects(() => store.save("a", "Replacement", {}), /not enough space/);
         assert.equal(store.getSlot("a").id, a.id);
     });
