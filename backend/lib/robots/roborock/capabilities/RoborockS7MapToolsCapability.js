@@ -164,8 +164,10 @@ class RoborockS7MapToolsCapability extends S7MapToolsCapability {
             try {
                 await this.store.record({...this.store.operation, status: "rebooting", error: null,
                     bootId: this.store.options.bootId});
-                await run("sync");
-                await run("reboot");
+                // These must not rely on PATH: Valetudo's environment may not include /sbin,
+                // which is where busybox provides reboot on the S7.
+                await run("/bin/sync");
+                await run("/sbin/reboot");
             } catch (error) {
                 this.rebootScheduled = false;
                 await this.store.record({...this.store.operation, status: "failed", error: error.message});
